@@ -1,11 +1,11 @@
-FROM python:3.12
+FROM python:3.12-slim
 
-WORKDIR /app
+RUN apt-get update && apt-get install -y \
+    curl \
+    git \
+    gcc \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
 
-COPY . .
-
-RUN pip install fastapi uvicorn
-
-EXPOSE 8000
-
-CMD ["uvicorn", "api:app", "--host", "0.0.0.0", "--port", "8000"]
+RUN pip install --no-cache-dir fastapi uvicorn openai pydantic
+RUN pip install --no-cache-dir semgrep
